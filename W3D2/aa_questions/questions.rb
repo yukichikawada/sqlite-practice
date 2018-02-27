@@ -1,5 +1,6 @@
 require_relative 'questions_db'
 require_relative 'users'
+require_relative 'question_follows'
 require 'byebug'
 
 class Question
@@ -50,5 +51,9 @@ class Question
 
   def replies
     Reply.find_by_question_id(id)
+  end
+
+  def followers
+    QuestionFollow.followers_for_question_id(id)
   end
 end

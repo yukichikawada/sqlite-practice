@@ -3,7 +3,7 @@ require_relative 'users'
 require_relative 'questions'
 
 class QuestionFollow
-  attr_accessor :user_id, :qustion_id
+  attr_accessor :user_id, :question_id
   attr_reader :id
 
   def initialize(options)
@@ -24,10 +24,10 @@ class QuestionFollow
 
     return nil if question.empty?
 
-    QuestionFollowre.new(question.first)
+    QuestionFollow.new(question.first)
   end
 
-  def followers_for_question_id(question_id)
+  def self.followers_for_question_id(question_id)
     question = Question.find_by_id(question_id)
     raise "#{question_id} not found" unless question
 
@@ -35,11 +35,35 @@ class QuestionFollow
       SELECT
         *
       FROM
+        question_follows
+      JOIN
         users
+      ON
+        users.id = question_follows.user_id
       WHERE
-        question_id = ?
+        question_follows.question_id = ?
     SQL
 
-    users.map { |user| User.new(user) }
+    users.map { |user| User.find_by_id(user['id']) }
+  end
+
+  def self.followed_questions_for_user_id(user_id)
+    user = Question.find_by_id(user_id)
+    raise "#{user_id} not found" unless user
+
+    questions = QuestionsDB.instance.execute(<<-SQL, user.id)
+      SELECT
+        *
+      FROM
+        question_follows
+      JOIN
+        questions
+      ON
+        questions.id = question_follows.question_id
+      WHERE
+        question_follows.user_id = ?
+    SQL
+
+    questions.map { |q| Question.find_by_id(q['id']) }
   end
 end

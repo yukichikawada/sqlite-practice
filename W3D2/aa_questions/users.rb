@@ -1,5 +1,6 @@
 require_relative 'questions_db'
 require_relative 'questions'
+require_relative 'question_follows'
 require 'byebug'
 
 class User
@@ -48,5 +49,9 @@ class User
 
   def authored_replies
     Reply.find_by_user_id(id)
+  end
+
+  def followed_questions
+    QuestionFollow.followed_questions_for_user_id(id)
   end
 end
