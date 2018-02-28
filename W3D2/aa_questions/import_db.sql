@@ -64,7 +64,8 @@ INSERT INTO
   questions(title, body, user_id)
 VALUES
   ('Why?', 'Do we have to do this', (SELECT id FROM users WHERE fname = 'Yukichi') ),
-  ('Boolean values in SQL creating table...', 'How to set Integer range?', (SELECT id FROM users WHERE fname = 'Yangchen') );
+  ('Boolean values in SQL creating table...', 'How to set Integer range?', (SELECT id FROM users WHERE fname = 'Yangchen') ),
+  ('Third question', 'asdfasdfasdf', 1);
 
 INSERT INTO
   replies(question_id, user_id, body, reply_id)
@@ -76,9 +77,19 @@ INSERT INTO
   question_likes(user_id, question_id)
 VALUES
   ((SELECT id FROM users WHERE fname = 'Yangchen'),
-  (SELECT id FROM questions WHERE title = 'Why?'));
+  (SELECT id FROM questions WHERE title = 'Why?')),
+  (2, 1),
+  (3, 1),
+  (1, 2),
+  (2, 2),
+  (1, 3);
 
 INSERT INTO
   question_follows(user_id, question_id)
 VALUES
-  (1, 1);
+  (1, 1),
+  (2, 1),
+  (3, 1),
+  (1, 2),
+  (2, 2),
+  (1, 3);

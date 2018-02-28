@@ -1,6 +1,7 @@
 require_relative 'questions_db'
 require_relative 'users'
 require_relative 'question_follows'
+require_relative 'question_likes'
 require 'byebug'
 
 class Question
@@ -55,5 +56,17 @@ class Question
 
   def followers
     QuestionFollow.followers_for_question_id(id)
+  end
+
+  def likers
+    QuestionLike.likers_for_question_id(id)
+  end
+
+  def num_likes
+    QuestionLike.num_likers_for_question_id(id)
+  end
+
+  def self.most_liked(n)
+    QuestionLike.most_liked_questions(n)
   end
 end
